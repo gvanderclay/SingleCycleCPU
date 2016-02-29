@@ -133,7 +133,7 @@ BEGIN testAndI
         ALUop 0x2 
         MemWrite 0
         ALUsrc 1
-        Unsigned 0
+        Unsigned 1
         RegWrite 1
         Jump 0
         jal 0
@@ -194,8 +194,102 @@ BEGIN testJAL
     OUTPUTS
         MemRead 0
         MemWrite 1
-        RegWrite 0
+        RegWrite 1
         Jump 1
         jal 1
+        jr 0
+        Halt 0
+
+BEGIN testJR
+    INPUTS
+        OpCode 0x0
+        functionCode 0x08
+    OUTPUTS
+        ALUop 0x0
+
+BEGIN testLUI
+    INPUTS
+        OpCode 0xf
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        Bne 0
+        MemToReg 0
+        ALUop 0x6
+        MemWrite 0
+        ALUsrc 1
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testORI
+    INPUTS
+        OpCode 0xd
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        Bne 0
+        MemToReg 0
+        ALUop 0x3
+        MemWrite 0
+        ALUsrc 1
+        Unsigned 1
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testSLTI
+    INPUTS
+        OpCode 0xa
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        Bne 0
+        MemToReg 0
+        ALUop 0xf
+        MemWrite 0
+        ALUsrc 1
+        Unsigned 0
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testSLTIU
+    INPUTS
+        OpCode 0xb
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        Bne 0
+        MemToReg 0
+        ALUop 0x7
+        MemWrite 0
+        ALUsrc 1
+        Unsigned 0
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testSW
+    INPUTS
+        OpCode 0x2b
+    OUTPUTS
+        Branch 0
+        Bne 0
+        ALUop 0x0
+        MemWrite 1
+        ALUsrc 1
+        Unsigned 0
+        RegWrite 0 
+        Jump 0
+        jal 0
         jr 0
         Halt 0
