@@ -1,0 +1,139 @@
+############################################################################
+#Phase 2 tests
+###########################################################################
+	
+.data
+firstHex:    65535
+secondHex:   0
+	
+# Random values to be used later on
+val0:      1
+val1:      101
+val2:      1048576
+val3:      103
+val4:      0
+
+.text
+
+# Here comes the fun stuff
+begin:
+lw $21, firstHex	# $21 = 0x0000FFFF
+lui $22, 0xFFFF		# $22 = 0xFFFF0000
+ori $23, $22, 0xFFFF	# $23 = 0xFFFFFFFF = 0xFFFF0000 | 0x0000FFFF 
+
+addi $20, $0, 0	        # Set $20 to zero
+add $20, $20, $21	# Add 65,535 to $20 
+
+sw $21, val0
+sw $21, secondHex	# secondHex should now also be 65,535
+add $21, $0, $0		# $21 = 0
+lw $21, secondHex	# $21 = 65,535
+
+beq $20, $0, begin	# if $20 is zero, go to top; this should NOT happen
+
+beq $20, 131070, phase2	# if $20 is 65,535 * 2, go to phase2; this should NOT happen, if it does, we previously jumped to top 
+	
+addi $8, $0, -65435	# $8 = -65,435
+lw $10, firstHex	# $10 = 65,535
+add $10, $10, $8	# $10 = 100
+beq $10, $21, phase2	# if $10 = 65,535 go to phase2; this should NOT happen
+
+beq $20, $21, initialize	# if $20 = $21 (65,535) then go to initialize
+
+# This should only be reached after the values have been initialized
+afterInit:
+lui $11, 0x1001
+ori $12, 0x0110
+sw $11, 8($17)
+sw $12, 0($18)
+
+j phase2
+
+# NONE OF THIS CODE SHOULD BE REACHED
+add $20, $0, $0
+ori $21, $0, 0
+addi $22, $22, -102
+addi $23, $0, -65535
+
+j phase2			
+
+# This code should execute
+initialize:
+sw $10, val0		# $10 = 100; index0 is now 100
+add $15, $10, $10	# $15 = 200
+sw $15, val4
+
+# Load addresses into $17 and $19
+la $17, val0		
+la $18, val4
+
+# Load val4 (val4 = 200) using offsets
+lw $11, 16($17)	
+lw $12, 0($18)	
+
+j afterInit
+
+phase2:
+# Test the bne instruction
+#Should not jump
+bne $20, $21, end
+li $9, 83
+#should jump
+bne $21, $22, goodbne
+li $19, 87
+j end
+
+goodbne:
+#Now, test the bitwise with registers
+and $24, $22, $23
+nor $25, $1, $11
+or $26, $20, $22
+xor $27, $17, $18
+
+#Test bitwise logic with immediates
+andi $4, $23, 0xF
+xori $5, $12, 0xFFFF
+
+#Push some registers to memory so we can reuse them
+sw $24 0x20($1)
+sw $25 0x24($1)
+sw $26 0x28($1)
+sw $27 0x2C($1)
+sw $4, 0x30($1)
+sw $5, 0x34($1)
+
+#Test jal and jr
+jal goodjal
+
+#jr should return to the following instruction
+#if not, then either jr doesn't work or $31 wasn't set correctly by jal
+jrreturn:
+#Now, do a more comprehensive test of subtraction
+#Since overflow is not used, all this seems to do is test the control wires
+li $4, 2
+li $5, 10
+sub $26, $4, $5
+subu $27, $4, $5
+#test all less than operators
+j slttests
+goodjal:
+#if $31 isn't set correctly by jal, the jr will jump to the wrong location
+#Manually test $31 and fail if it doesn't equal the expected address
+la $24, jrreturn
+#Not a complete test of subtraction (expected result of 0 doesn't indicate if signed vs unsigned works)
+sub $25, $31, $24
+bne $0, $25, end
+#An incorrect value in $25 means $31 is not set correctly
+jr $31
+
+slttests:
+#$26 is either very large (unsigned) or very small magnitude negative (signed)
+slt $13, $24, $26 #false
+sltu $14, $24, $26 #true
+slti $16, $26, 9 #true 
+sltiu $30, $26, 9 #false
+
+#forgot about these
+addu $7, $22, $23
+addiu $8, $26, 0xFFFF
+end:

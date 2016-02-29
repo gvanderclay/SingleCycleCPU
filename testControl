@@ -1,0 +1,201 @@
+BEGIN testAdd
+    INPUTS
+        OpCode  0x00
+        functionCode 0x20
+    OUTPUTS
+        RegDest 1
+        Branch 0
+        MemToReg 0
+        ALUop 0000
+        MemWrite 0
+        ALUsrc 0
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testAddU
+    INPUTS
+        OpCode 0x00
+        functionCode 0x21
+    OUTPUTS
+        RegDest 1
+        Branch 0
+        MemToReg 0
+        Bne 0
+        ALUop 0000
+        ALUsrc 0
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+BEGIN testAddi
+    INPUTS
+        OpCode 0x08
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        MemToReg 0
+        ALUop 0000
+        MemWrite 0
+        ALUsrc 1
+        RegWrite 1
+        Unsigned 0
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testAddIU
+    INPUTS
+        OpCode 0x09
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        Bne 0
+        MemToReg 0
+        ALUop 0000
+        MemWrite 0
+        ALUsrc 1
+        Unsigned 0
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+BEGIN testAnd
+    INPUTS
+        OpCode 0x0
+        functionCode 0x24
+    OUTPUTS 
+       ALUop 0x2
+
+BEGIN testNor
+    INPUTS
+        OpCode 0x0
+        functionCode 0x27
+    OUTPUTS 
+        ALUop 0x04
+
+BEGIN testOr
+    INPUTS
+        OpCode 0x0
+        functionCode 0x25
+    OUTPUTS
+        ALUop 0x03
+
+BEGIN testSLT
+    INPUTS
+        OpCode 0x0
+        functionCode 0x2a
+    OUTPUTS
+        ALUop 0xF
+
+BEGIN testSLTU
+    INPUTS 
+        OpCode 0x0
+        functionCode 0x2b
+    OUTPUTS
+        ALUop  0x7 
+
+BEGIN testSub
+    INPUTS
+        OpCode 0x0
+        functionCode 0x22
+    OUTPUTS
+        ALUop 0x1
+
+BEGIN testSubU
+    INPUTS
+        OpCode 0x0
+        functionCode 0x23
+    OUTPUTS
+        ALUop 0x1
+
+BEGIN testXor
+    INPUTS
+        OpCode 0x0
+        functionCode 0x26
+    OUTPUTS
+        ALUop 0x5
+
+
+BEGIN testAndI
+    INPUTS
+        OpCode  0xc
+    OUTPUTS
+        RegDest 0
+        Branch 0
+        Bne 0
+        MemToReg 0
+        ALUop 0x2 
+        MemWrite 0
+        ALUsrc 1
+        Unsigned 0
+        RegWrite 1
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+        
+BEGIN testBEQ
+    INPUTS
+        OpCode 0x4 
+    OUTPUTS
+        Branch 1
+        Bne 0
+        MemRead 0
+        MemWrite 0
+        ALUsrc 0
+        RegWrite 0
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testBNE
+    INPUTS
+        OpCode 0x5
+    OUTPUTS
+        Branch 1
+        Bne 1
+        MemRead 0
+        MemWrite 0
+        ALUsrc 0
+        RegWrite 0
+        Jump 0
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testHalt
+    INPUTS
+        OpCode 0x20
+    OUTPUTS
+        Halt 1
+
+BEGIN testJump
+    INPUTS
+        OpCode 0x2
+    OUTPUTS
+        MemRead 0
+        MemWrite 0
+        RegWrite 0
+        Jump 1
+        jal 0
+        jr 0
+        Halt 0
+
+BEGIN testJAL
+    INPUTS
+        OpCode 0x3
+    OUTPUTS
+        MemRead 0
+        MemWrite 1
+        RegWrite 0
+        Jump 1
+        jal 1
+        jr 0
+        Halt 0
